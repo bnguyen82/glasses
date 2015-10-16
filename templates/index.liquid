@@ -1,0 +1,141 @@
+<h1 class="hidden">{{shop.name}}</h1>
+<div class="col-md-9 col-sm-12 col-xs-12">
+	<!-- Content-->
+	<div class="main-content">
+		{% if settings.slide_1 != false or settings.slide_2 != false or settings.slide_3 != false or settings.slide_4 != false %}
+		<!-- Begin slider -->
+		<div class="slider-default col-md-12 col-sm-12 col-xs-12">
+      <div class="flexslider-container">
+        <div class="flexslider">
+          <ul class="slides">
+            {% for i in (1..4) %}
+            {% capture show_slide %}slide_{{ i }}{% endcapture %}
+            {% capture image %}slideshow_{{ i }}.png{% endcapture %}
+            {% capture link %}slide_{{ i }}_link{% endcapture %}
+            {% capture alt %}slide_{{ i }}_alt{% endcapture %}
+            {% if settings[show_slide] %}
+            <li>
+              <a href="{{ settings[link] }}">
+                <img src="{{ image | asset_url }}" alt="{{ settings[alt] | escape }}" />
+              </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          <div class="flex-controls"></div>
+        </div>
+      </div>
+		</div>
+		<!-- End slider -->
+		{% endif %}
+		<!-- Sản phẩm trang chủ -->
+
+
+
+
+    {% if settings.use_featured_products %}
+    <div class="product-list clearfix" >
+      <div class="title-line">
+        <h3>{%if settings.featured_products_title == ''%}{{collections[settings.featured_collection].title}}{%else%}{{ settings.featured_products_title }}{%endif%}</h3>
+      </div>
+      <!--Product loop-->
+      <div class="row content-product-list products-resize">
+        {% for product in collections[settings.featured_collection].products limit: 6 %}
+        {% include 'product-loop'%}
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-lg-12 pull-center">
+          {%if collections[settings.featured_collection].products.size > 0%}
+          {% if feature_size_actual > feature_size %}
+          <a class="btn btn-readmore" href="{{collections[settings.featured_collection].url }}" role="button">Xem thêm </a>
+          {%endif%}
+          {%else%}
+          <a class="link-setting" href="/admin/theme#/list">Chưa có sản phẩm nào để hiển thị. Vui lòng vào trang quản trị, và cấu hình cho mục này</a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+
+    <!--Product loop-->
+    {% endif %}
+
+    {% if settings.use_sale_products %}
+    <div class="product-list clearfix ">
+      <div class="title-line">
+        <h3>{%if settings.sale_products_title == ''%}{{collections[settings.sale_products_title].title}}{%else%}{{ settings.sale_products_title }}{%endif%}</h3>
+      </div>
+
+      <div class="row content-product-list products-resize">
+        {% for product in collections[settings.sale_collection].products limit:6 %}
+        {% include 'product-loop' with collection.handle %}
+        {% endfor %}
+      </div>
+      <div class="row">
+
+        <div class="col-lg-12 pull-center">
+          {%if collections[settings.sale_collection].products.size > 0%}
+          {% if sale_size_actual > sale_size %}
+          <a class="btn btn-readmore" href="{{collections[settings.sale_collection].url }}" role="button">Xem thêm </a>
+          {%endif%}
+          {%else%}
+          <a class="link-setting" href="/admin/theme#/list">Chưa có sản phẩm nào để hiển thị. Vui lòng vào trang quản trị, và cấu hình cho mục này </a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if settings.use_new_products and settings.new_collection != "" %}
+    <div class="product-list clearfix ">
+      <div class="title-line">
+        <h3>{%if settings.new_products_title == ''%}{{collections[settings.new_collection].title}}{%else%}{{ settings.new_products_title }}{%endif%}</h3>
+      </div>
+      <div class="row content-product-list products-resize">
+        {% for product in collections[settings.new_collection].products limit: 6 %}
+        {% include 'product-loop' with collection.handle %}
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-lg-12 pull-center">
+
+          {%if collections[settings.new_collection].products.size > 0%}
+          {% if new_size_actual > new_size %}
+          <a class="btn btn-readmore" href="{{collections[settings.new_collection].url }}" role="button">Xem thêm </a>
+          {%endif%}
+          {%else%}
+          <a class="link-setting" href="/admin/theme#/list">Chưa có sản phẩm nào để hiển thị. Vui lòng vào trang quản trị, và cấu hình cho mục này</a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if settings.use_new_products == false or settings.new_collection == "" %}
+    <div class="product-list clearfix ">
+      <div class="title-line">
+        <h3>Tất cả sản phẩm</h3>
+      </div>
+      <div class="row content-product-list products-resize">
+        {% for product in collections.all.products limit: new_size %}
+        {% include 'product-loop' with collection.handle %}
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-lg-12 pull-center">
+
+          {%if collections.all.products.size > 0%}
+          {% if collections.all.products.size > new_size %}
+          <a class="btn btn-readmore" href="collections/all" role="button">Xem thêm </a>
+          {%endif%}
+          {%else%}
+          <a class="link-setting" href="/admin/theme#/list">Chưa có sản phẩm nào để hiển thị. Vui lòng vào trang quản trị, và cấu hình cho mục này</a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <!-- End sản phẩm trang chủ -->
+	</div>
+	<!-- Content-->
+</div>
